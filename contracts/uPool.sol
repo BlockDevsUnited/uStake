@@ -153,7 +153,7 @@ contract uStakedEth {
      * @notice Construct a new token
      */
     constructor() {
-        minter = msg.sender;
+        minter = tx.origin;
         emit MinterChanged(address(0), minter);
     }
 
