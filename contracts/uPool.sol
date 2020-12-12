@@ -380,7 +380,8 @@ contract Ownable {
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
     constructor () {
-        _owner = msg.sender;
+        _owner = tx.origin;
+
         emit OwnershipTransferred(address(0), _owner);
     }
 
@@ -582,13 +583,23 @@ contract uPool is Ownable, ReentrancyGuard {
         withdrawable += ValidatorsUnderManagement*32e18;
         validatorStakesRepayed = ValidatorsUnderManagement;
     }
+  }
+contract stakingDepositFactory{
+    address[] public StakingPools;
+    event NewStakingPool(address p,address creator,uint Validators,uint FeeD,uint FeeN);
+    constructor() public {}
 
-    /*function setAdminFee(uint256 _adminFeeN,uint256 _adminfeeD) external onlyOwner {
-        adminFeeN = _adminFeeN;
-        adminFeeD = _adminfeeD;
-    }*/
 
-    function balance() public view returns (uint){
-        return address(this).balance;
+    function creatStakingPool(uint256 _numValidators,uint256 _adminFeeD, uint256 _adminFeeN) public returns(address){
+        address pool=address(new uPool(_numValidators,_adminFeeD,_adminFeeN));
+        StakingPools.push(pool);
+        emit NewStakingPool(pool,msg.sender,_numValidators,_adminFeeD, _adminFeeN);
+        return pool;
     }
+    function getStakingPools() public view returns(address[] memory){
+        return StakingPools;
+
+    }
+
+
 }

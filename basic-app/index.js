@@ -379,6 +379,7 @@ let contractABI = [
 ]
 let contract
 
+
 let tokenAddress //"0xd4CC801D577E6B08A63D8C76097b98F7F2b38fee"//"0x59F9e6E5e495F2fB259963DeC5BA56CFBd5846e7"
 let tokenABI = [
 	{
